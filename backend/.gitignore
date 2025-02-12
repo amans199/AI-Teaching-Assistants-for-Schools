@@ -1,0 +1,5 @@
+.env
+__pycache__
+chatbot.ipynb
+client-side.py
+server-side.py
