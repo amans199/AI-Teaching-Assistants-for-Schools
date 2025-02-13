@@ -1,5 +1,6 @@
 .env
 __pycache__
 chatbot.ipynb
+chatbot2.ipynb
 client-side.py
 server-side.py
