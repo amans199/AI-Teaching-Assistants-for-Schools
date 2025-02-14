@@ -11,7 +11,7 @@ app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 
 # Create an instance of the Assistant
-assistant = Assistant(api_key=os.getenv("API_KEY"), base_url="https://api.aimlapi.com/v1", model="deepseek/deepseek-r1")
+assistant = Assistant(api_key=os.getenv("API_KEY"), base_url="https://api.aimlapi.com/v1", model="deepseek/deepseek-chat")
 
 @socketio.on('connect')
 def handle_connect():
@@ -51,4 +51,4 @@ def handle_thread(data):
                                     "message": f"Thread {thread_id} has been deleted."})
 
 if __name__ == "__main__":
-    socketio.run(app, host="localhost", port=8765, debug=True, use_reloader=False)
+    socketio.run(app, host="127.0.0.1", port=8765, debug=True, use_reloader=False)
