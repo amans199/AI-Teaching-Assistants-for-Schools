@@ -38,10 +38,15 @@ class SocketService {
     });
 
     // Chat events
-    this.socket.on("message", (message) => {
+    this.socket.on("message", (data) => {
+      // Skip the initial connection message
+      if (data.message === "Connected to the chatbot server.") {
+        return;
+      }
+
       chatStore.addMessage({
         id: crypto.randomUUID(),
-        content: message.message,
+        content: data.message,
         sender: "assistant",
         timestamp: new Date(),
       });

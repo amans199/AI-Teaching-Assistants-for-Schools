@@ -24,19 +24,19 @@ import { accessibilityStore } from "@/stores/AccessibilityStore";
 export const Toolbar = observer(() => {
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="fixed right-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/50 p-2 rounded-lg shadow-lg border">
+      <div className="flex flex-row gap-2 bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/50 p-2 rounded-lg shadow-lg max-w-4xl mx-auto border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
               onClick={themeStore.toggleTheme}
-              className="h-[60px] w-[60px] hover:bg-accent relative"
+              className="h-[40px] w-[40px] p-2 hover:bg-accent relative"
             >
               {themeStore.theme === "light" ? (
-                <Sun className="h-6 w-6 text-amber-500" />
+                <Sun className="h-4 w-4 text-amber-500" />
               ) : (
-                <Moon className="h-6 w-6 text-slate-400" />
+                <Moon className="h-4 w-4 text-slate-400" />
               )}
             </Button>
           </TooltipTrigger>
@@ -45,7 +45,7 @@ export const Toolbar = observer(() => {
           </TooltipContent>
         </Tooltip>
 
-        <Separator className="my-1" />
+        <Separator className="mx-1" />
 
         <Tooltip>
           <TooltipTrigger asChild>
@@ -55,9 +55,9 @@ export const Toolbar = observer(() => {
               onClick={() =>
                 accessibilityStore.setFontSize(accessibilityStore.fontSize + 1)
               }
-              className="h-[60px] w-[60px] hover:bg-accent relative"
+              className="h-[40px] w-[40px] p-2 hover:bg-accent relative"
             >
-              <ZoomIn className="h-6 w-6 text-blue-500" />
+              <ZoomIn className="h-4 w-4 text-blue-500" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="left">
@@ -73,9 +73,9 @@ export const Toolbar = observer(() => {
               onClick={() =>
                 accessibilityStore.setFontSize(accessibilityStore.fontSize - 1)
               }
-              className="h-[60px] w-[60px] hover:bg-accent relative"
+              className="h-[40px] w-[40px] p-2 hover:bg-accent relative"
             >
-              <ZoomOut className="h-6 w-6 text-blue-500" />
+              <ZoomOut className="h-4 w-4 text-blue-500" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="left">
@@ -83,7 +83,7 @@ export const Toolbar = observer(() => {
           </TooltipContent>
         </Tooltip>
 
-        <Separator className="my-1" />
+        <Separator className="mx-1" />
 
         <Tooltip>
           <TooltipTrigger asChild>
@@ -91,17 +91,14 @@ export const Toolbar = observer(() => {
               variant="ghost"
               size="icon"
               onClick={accessibilityStore.toggleHighContrast}
-              className={cn(
-                "h-[60px] w-[60px] hover:bg-accent relative",
-                accessibilityStore.highContrast && "bg-accent"
-              )}
+              className={cn("h-[40px] w-[40px] p-2 hover:bg-accent relative")}
             >
-              <Eye className="h-6 w-6 text-blue-500" />
+              <Eye className="h-4 w-4 text-blue-500" />
               <span className="absolute -top-1 right-2 w-3 h-3">
                 {accessibilityStore.highContrast ? (
-                  <Check className="w-6 h-6 text-green-500" />
+                  <Check className="w-4 h-4 text-green-500" />
                 ) : (
-                  <X className="w-6 h-6 text-red-500" />
+                  <X className="w-4 h-4 text-red-500" />
                 )}
               </span>
             </Button>
@@ -117,17 +114,14 @@ export const Toolbar = observer(() => {
               variant="ghost"
               size="icon"
               onClick={accessibilityStore.toggleAutoScroll}
-              className={cn(
-                "h-[60px] w-[60px] hover:bg-accent relative",
-                accessibilityStore.autoScroll && "bg-accent"
-              )}
+              className={cn("h-[40px] w-[40px] p-2 hover:bg-accent relative")}
             >
-              <ArrowDown className="h-6 w-6 text-blue-500" />
+              <ArrowDown className="h-4 w-4 text-blue-500" />
               <span className="absolute -top-1 right-2 w-3 h-3">
                 {accessibilityStore.autoScroll ? (
-                  <Check className="w-6 h-6 text-green-500" />
+                  <Check className="w-4 h-4 text-green-500" />
                 ) : (
-                  <X className="w-6 h-6 text-red-500" />
+                  <X className="w-4 h-4 text-red-500" />
                 )}
               </span>
             </Button>
@@ -137,16 +131,16 @@ export const Toolbar = observer(() => {
           </TooltipContent>
         </Tooltip>
 
-        {/* <Separator className="my-1" /> */}
+        {/* <Separator className="mx-1" /> */}
 
         {/* <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="h-[60px] w-[60px] hover:bg-accent relative"
+              className="h-[40px] w-[40px] p-2 hover:bg-accent relative"
             >
-              <Upload className="h-6 w-6 text-blue-500" />
+              <Upload className="h-4 w-4 text-blue-500" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="left">
@@ -159,9 +153,9 @@ export const Toolbar = observer(() => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-[60px] w-[60px] hover:bg-accent relative"
+              className="h-[40px] w-[40px] p-2 hover:bg-accent relative"
             >
-              <Volume2 className="h-6 w-6 text-blue-500" />
+              <Volume2 className="h-4 w-4 text-blue-500" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="left">

@@ -20,11 +20,10 @@ const App = observer(() => {
     if (accessibilityStore.autoScroll && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-    console.log("🚀 ~ App ~ chatStore.messages:", chatStore.messages);
   }, [chatStore.messages.length]);
 
   return (
-    <div className="flex h-screen bg-background text-foreground">
+    <div className="flex h-screen bg-background text-foreground h-[100vh]">
       <div className="flex-1 flex flex-col">
         <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
           <div className="max-w-4xl mx-auto w-full px-4 py-2 flex items-center gap-2">
@@ -32,11 +31,9 @@ const App = observer(() => {
             <h1 className="text-lg font-semibold">Chat Assistant</h1>
           </div>
         </header>
-        <main
-          className="flex-1 flex flex-col max-w-4xl mx-auto w-full"
-          style={{ height: "94vh" }}
-        >
-          <div className="flex-1 overflow-y-auto">
+        <Toolbar />
+        <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
+          <div className="flex-1 overflow-y-auto max-h-[70vh] p-4">
             {chatStore.messages.map((message) => (
               <ChatMessage key={message.id} message={message} />
             ))}
@@ -47,7 +44,6 @@ const App = observer(() => {
           </div>
         </main>
       </div>
-      <Toolbar />
     </div>
   );
 });
