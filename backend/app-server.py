@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_socketio import SocketIO, emit
 import os
 from dotenv import load_dotenv
-from ai_assistant import ChatBot
+from ai_assistant import Assistant
 import logging
 
 load_dotenv()
@@ -10,13 +10,13 @@ load_dotenv()
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 
-# Create an instance of the ChatBot
-chatbot = ChatBot(api_key=os.getenv("GROQ_API_KEY"), model_name="mixtral-8x7b-32768")
+# Create an instance of the Assistant
+assistant = Assistant(api_key=os.getenv("API_KEY"), base_url="https://api.aimlapi.com/v1", model="deepseek/deepseek-r1")
 
 @socketio.on('connect')
 def handle_connect():
     print("Client connected.")
-    emit('message', {"message": "Connected to the chatbot server."})
+    emit('message', {"message": "Connected to the assistant server."})
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -31,17 +31,20 @@ def handle_message(data):
     user_input = data.get("message", "")
     thread_id = data.get("thread_id", "")
     print(f"< {user_input}")
-    response = chatbot.generate_response(thread_id, user_input)
-    print("*********************")
-    print(f"Response: {response}")
-    print("*********************")
-    emit('message', {"message": response})
-    print(f"> {response}")
+    response = assistant.generate_response(thread_id, user_input, temperature=0.5, top_p=0.9)
+    if response:
+        print("*********************")
+        print(f"Response: {response}")
+        print("*********************")
+        emit('message', {"message": response})
+        print(f"> {response}")
+    else:
+        print("LLM didn't generate the response")
 
 @socketio.on('delete_thread')
 def handle_thread(data):
     thread_id = data.get("thread_id", "")
-    chatbot.delete_conversation(thread_id)
+    assistant.delete_conversation(thread_id)
     print(f"{thread_id}: Thread deleted.")
     # Emit a response to the client
     emit('delete_thread_response', {"thread_id": thread_id, 

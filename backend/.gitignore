@@ -1,6 +1,10 @@
+env
 .env
+venv
+.venv
 __pycache__
 chatbot.ipynb
 chatbot2.ipynb
+ai_assistant2.py
 client-side.py
 server-side.py
