@@ -3,7 +3,8 @@ import { Send, Upload, Search, BrainCircuit, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { chatStore } from "@/stores/ChatStore";
-import { signalRService } from "@/services/signalRService";
+// import { signalRService } from "@/services/signalRService";
+import { socketService } from "@/services/socketService";
 import { accessibilityStore } from "@/stores/AccessibilityStore";
 import { cn } from "@/lib/utils";
 import {
@@ -34,7 +35,7 @@ export function ChatInput() {
     };
 
     chatStore.addMessage(newMessage);
-    await signalRService.sendMessage(message);
+    await socketService.sendMessage(message);
     setMessage("");
     setHeight(60); // Reset height after sending
 

@@ -4,7 +4,8 @@ import { ChatInput } from "@/components/ChatInput";
 import { Toolbar } from "@/components/Toolbar";
 import { chatStore } from "@/stores/ChatStore";
 import { useEffect, useRef } from "react";
-import { signalRService } from "@/services/signalRService";
+// import { signalRService } from "@/services/signalRService";
+import { socketService } from "@/services/socketService";
 import { accessibilityStore } from "@/stores/AccessibilityStore";
 import { MessageSquare } from "lucide-react";
 
@@ -12,13 +13,14 @@ const App = observer(() => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    signalRService.start();
+    socketService.start();
   }, []);
 
   useEffect(() => {
     if (accessibilityStore.autoScroll && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
+    console.log("🚀 ~ App ~ chatStore.messages:", chatStore.messages);
   }, [chatStore.messages.length]);
 
   return (
