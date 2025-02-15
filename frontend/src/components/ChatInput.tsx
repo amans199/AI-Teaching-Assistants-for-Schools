@@ -1,25 +1,21 @@
 import { useState } from "react";
-import { Send, Upload, Search, BrainCircuit, GripVertical } from "lucide-react";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { chatStore } from "@/stores/ChatStore";
-// import { signalRService } from "@/services/signalRService";
-import { socketService } from "@/services/socketService";
+import { socketService } from "@/services/SocketService";
 import { accessibilityStore } from "@/stores/AccessibilityStore";
 import { cn } from "@/lib/utils";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { chatStore } from "@/stores/ChatStore";
 
-export function ChatInput() {
+export const ChatInput = () => {
   const [message, setMessage] = useState("");
   const [height, setHeight] = useState(60);
   const [isSending, setIsSending] = useState(false);
   // Approximate token count (rough estimation)
   const estimateTokens = (text: string) => {
-    return Math.ceil(text.split(/\s+/).length * 1.3);
+    if (!text.trim()?.length) return 0;
+    return Math.ceil(text.trim().split(/\s+/).length * 1.3);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,14 +23,14 @@ export function ChatInput() {
     if (!message.trim()) return;
     setIsSending(true);
 
-    const newMessage = {
-      id: crypto.randomUUID(),
-      content: message,
-      sender: "user" as const,
-      timestamp: new Date(),
-    };
+    // const newMessage = {
+    //   id: crypto.randomUUID(),
+    //   content: message,
+    //   sender: "user" as const,
+    //   timestamp: new Date(),
+    // };
 
-    chatStore.addMessage(newMessage);
+    // chatStore.addMessage(newMessage);
     await socketService.sendMessage(message);
     setMessage("");
     setHeight(60); // Reset height after sending
@@ -56,7 +52,7 @@ export function ChatInput() {
                   "bg-transparent transition-all",
                   accessibilityStore.highContrast && "contrast-125"
                 )}
-                disabled={isSending}
+                disabled={isSending || chatStore.loadingMessageId !== null}
                 style={{
                   fontSize: `${accessibilityStore.fontSize}px`,
                   minHeight: `${height}px`,
@@ -123,4 +119,4 @@ export function ChatInput() {
       </div>
     </form>
   );
-}
+};

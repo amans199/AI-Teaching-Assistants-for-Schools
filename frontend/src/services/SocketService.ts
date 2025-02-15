@@ -4,7 +4,7 @@ import { chatStore } from "@/stores/ChatStore";
 class SocketService {
   private socket: Socket | null = null;
   private readonly SOCKET_URL = "http://127.0.0.1:8765";
-
+  private currentTimeout: NodeJS.Timeout | null = null;
   constructor() {
     this.initializeSocket();
   }
@@ -39,8 +39,13 @@ class SocketService {
 
     // Chat events
     this.socket.on("message", (data) => {
-      // Skip the initial connection message
-      if (data.message === "Connected to the chatbot server.") {
+      // Clear any existing timeout
+      if (this.currentTimeout) {
+        clearTimeout(this.currentTimeout);
+        this.currentTimeout = null;
+      }
+
+      if (data.message.startsWith("Connected to")) {
         return;
       }
 
@@ -66,20 +71,43 @@ class SocketService {
   }
 
   async stop() {
+    if (this.currentTimeout) {
+      clearTimeout(this.currentTimeout);
+      this.currentTimeout = null;
+    }
     this.socket?.disconnect();
   }
 
-  async sendMessage(content: string) {
+  async sendMessage(content: string, isRetry: boolean = false) {
     if (!this.socket?.connected) {
       console.error("Socket not connected");
       return;
     }
 
-    this.socket.emit("message", { content });
+    // Don't add user message again if it's a retry
+    if (!isRetry) {
+      chatStore.addMessage({
+        id: crypto.randomUUID(),
+        content,
+        sender: "user",
+        timestamp: new Date(),
+      });
+    }
+
+    // Add loading message
+    chatStore.addLoadingMessage();
+
+    // Set timeout for 2 minutes
+    this.currentTimeout = setTimeout(() => {
+      chatStore.setTimeoutError(true);
+    }, 120000);
+
+    this.socket.emit("message", { content, threadId: chatStore.threadId });
   }
 
-  isConnected(): boolean {
-    return this.socket?.connected ?? false;
+  async retry(content: string) {
+    chatStore.setTimeoutError(false);
+    await this.sendMessage(content, true);
   }
 }
 

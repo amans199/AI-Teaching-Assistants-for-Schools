@@ -24,7 +24,7 @@ import { accessibilityStore } from "@/stores/AccessibilityStore";
 export const Toolbar = observer(() => {
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="flex flex-row gap-2 bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/50 p-2 rounded-lg shadow-lg max-w-4xl mx-auto border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
+      <div className="flex items-center gap-2 mx-auto bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/50 p-2 rounded-lg shadow-lg">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
