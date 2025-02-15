@@ -7,6 +7,7 @@ import { chatStore } from "@/stores/ChatStore";
 import { socketService } from "@/services/SocketService";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
+import Markdown from "react-markdown";
 import "./ChatMessage.css";
 
 interface ChatMessageProps {
@@ -73,7 +74,9 @@ export const ChatMessage = observer(({ message }: ChatMessageProps) => {
               </Button>
             </div>
           ) : (
-            <p className="mt-1 leading-relaxed">{message.content}</p>
+            <p className="mt-1 leading-relaxed">
+              <Markdown>{message.content}</Markdown>
+            </p>
           )}
         </div>
       </div>
