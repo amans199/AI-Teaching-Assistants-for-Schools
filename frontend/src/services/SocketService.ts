@@ -3,9 +3,10 @@ import { chatStore } from "@/stores/ChatStore";
 
 class SocketService {
   private socket: Socket | null = null;
-  private readonly SOCKET_URL = "http://127.0.0.1:8765";
+  private readonly SOCKET_URL: string;
   private currentTimeout: NodeJS.Timeout | null = null;
   constructor() {
+    this.SOCKET_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8765";
     this.initializeSocket();
   }
 
