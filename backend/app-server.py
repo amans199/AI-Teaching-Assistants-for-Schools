@@ -11,7 +11,7 @@ app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 
 # Create an instance of the Assistant
-assistant = Assistant(api_key=os.getenv("API_KEY"), base_url="https://api.aimlapi.com/v1", model="deepseek/deepseek-chat")
+assistant = Assistant(api_key=os.getenv("API_KEY"), base_url="https://api.aimlapi.com/v1", model="gpt-4o")
 
 @socketio.on('connect')
 def handle_connect():
@@ -19,8 +19,8 @@ def handle_connect():
     emit('message', {"message": "Connected to the assistant server."})
 
 @socketio.on('disconnect')
-def handle_disconnect():
-    print("Client disconnected.")
+def handle_disconnect(sid):
+    print(f"Client {sid} disconnected.")
 
 @socketio.on_error_default
 def default_error_handler(e):
