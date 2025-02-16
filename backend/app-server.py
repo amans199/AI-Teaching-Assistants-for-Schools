@@ -10,6 +10,10 @@ load_dotenv()
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 
+@app.route("/")
+def home():
+    return "Hello, Flask on Vercel!"
+
 # Create an instance of the Assistant
 assistant = Assistant(api_key=os.getenv("API_KEY"), base_url="https://api.aimlapi.com/v1", model="deepseek/deepseek-chat")
 
