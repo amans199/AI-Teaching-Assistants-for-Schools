@@ -28,8 +28,9 @@ def default_error_handler(e):
 
 @socketio.on('message')
 def handle_message(data):
-    user_input = data.get("message", "")
-    thread_id = data.get("thread_id", "")
+    print(">>", data)
+    user_input = data.get("content", "")
+    thread_id = data.get("threadId", "")
     print(f"< {user_input}")
     response = assistant.generate_response(thread_id, user_input, temperature=0.5, top_p=0.9)
     if response:
